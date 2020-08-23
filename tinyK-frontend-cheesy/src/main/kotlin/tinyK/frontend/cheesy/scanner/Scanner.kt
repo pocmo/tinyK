@@ -24,6 +24,12 @@ class ScannerException(
     message: String
 ) : Exception(message)
 
+/**
+ * A hand-written scanner creating [Token]s for a subset of the Kotlin programming language.
+ *
+ * Kotlin tokens:
+ * https://github.com/Kotlin/kotlin-spec/blob/release/grammar/src/main/antlr/KotlinLexer.tokens
+ */
 class Scanner {
     fun scan(input: Input): List<Token> {
         val tokens = mutableListOf<Token>()
@@ -56,6 +62,14 @@ class Scanner {
                 input.matchesAndProceed(')') -> tokens.add(Token(Token.Type.RIGHT_PARENTHESIS, ")"))
                 input.matchesAndProceed('{') -> tokens.add(Token(Token.Type.LEFT_CURLY_BRACKET, "{"))
                 input.matchesAndProceed('}') -> tokens.add(Token(Token.Type.RIGHT_CURLY_BRACKET, "}"))
+
+                input.matchesAndProceed('|') -> {
+                    if (input.matchesAndProceed('|')) {
+                        tokens.add(Token(Token.Type.DISJUNCTION, "||"))
+                    } else {
+                        throw ScannerException("Expected |. Got: ${input.character()}")
+                    }
+                }
 
                 else -> throw ScannerException("Unexpected character: ${input.character()}")
             }

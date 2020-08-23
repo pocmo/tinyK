@@ -38,6 +38,8 @@ data class Token(
         MULTIPLICATION,
         DIVISION,
 
+        DISJUNCTION,
+
         EQUAL,
         EQUAL_EQUAL,
 

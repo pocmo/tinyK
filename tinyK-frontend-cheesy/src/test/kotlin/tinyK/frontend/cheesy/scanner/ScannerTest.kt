@@ -114,6 +114,30 @@ class ScannerTest {
     }
 
     @Test
+    fun `val assignment conjunction expression`() {
+        val tokens = Scanner().scan(
+            Input(
+                """
+            val food = fruit || vegetable
+                """.trimIndent()
+            )
+        )
+
+        assertEquals(
+            listOf(
+                Token(Token.Type.VAL, "val"),
+                Token(Token.Type.IDENTIFIER, "food"),
+                Token(Token.Type.EQUAL, "="),
+                Token(Token.Type.IDENTIFIER, "fruit"),
+                Token(Token.Type.DISJUNCTION, "||"),
+                Token(Token.Type.IDENTIFIER, "vegetable"),
+                Token(Token.Type.EOF, null)
+            ),
+            tokens
+        )
+    }
+
+    @Test
     fun `Simple function`() {
         val tokens = Scanner().scan(
             Input(

@@ -16,4 +16,7 @@
 
 package tinyK.ast
 
-abstract class ConjunctionNode : ExpressionNode()
+data class ConjunctionNode(
+    val leftExpression: ExpressionNode,
+    val rightExpression: ExpressionNode
+) : ExpressionNode()

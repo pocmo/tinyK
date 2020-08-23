@@ -76,4 +76,22 @@ class ParserTest {
             script.toString()
         )
     }
+
+    @Test
+    fun `val assignment conjunction expression`() {
+        val tokens = Scanner().scan(
+            Input(
+                """
+            val food = fruit || vegetable
+                """.trimIndent()
+            )
+        )
+
+        val script = Parser().parse(TokenReader(tokens))
+
+        assertEquals(
+            "ScriptNode(statements=[PropertyDeclarationNode(immutable=true, identifier=food, type=<Unknown>, expression=ConjunctionNode(leftExpression=IdentifierNode(name=fruit), rightExpression=IdentifierNode(name=vegetable)))])",
+            script.toString()
+        )
+    }
 }
