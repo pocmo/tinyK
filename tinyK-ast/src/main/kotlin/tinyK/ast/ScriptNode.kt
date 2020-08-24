@@ -16,6 +16,12 @@
 
 package tinyK.ast
 
+import tinyK.ast.visitor.Visitor
+
 data class ScriptNode(
     val statements: List<StatementNode>
-)
+) {
+    fun apply(visitor: Visitor) {
+        statements.forEach { it.apply(visitor) }
+    }
+}

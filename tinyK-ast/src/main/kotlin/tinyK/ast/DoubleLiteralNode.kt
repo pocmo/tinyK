@@ -16,6 +16,10 @@
 
 package tinyK.ast
 
+import tinyK.ast.visitor.Visitor
+
 data class DoubleLiteralNode(
     val value: Double
-) : LiteralNode()
+) : LiteralNode() {
+    override fun apply(visitor: Visitor) = visitor.visitDoubleLiteralNode(this)
+}

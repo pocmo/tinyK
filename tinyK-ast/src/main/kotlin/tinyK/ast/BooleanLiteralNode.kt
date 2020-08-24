@@ -16,6 +16,10 @@
 
 package tinyK.ast
 
+import tinyK.ast.visitor.Visitor
+
 data class BooleanLiteralNode(
     val value: Boolean
-) : LiteralNode()
+) : LiteralNode() {
+    override fun apply(visitor: Visitor) = visitor.visitBooleanLiteralNode(this)
+}

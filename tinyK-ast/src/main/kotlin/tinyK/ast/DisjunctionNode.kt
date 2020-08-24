@@ -16,7 +16,11 @@
 
 package tinyK.ast
 
+import tinyK.ast.visitor.Visitor
+
 data class DisjunctionNode(
-    val leftExpression: ExpressionNode,
-    val rightExpression: ExpressionNode
-) : ExpressionNode()
+    val left: ExpressionNode,
+    val right: ExpressionNode
+) : ExpressionNode() {
+    override fun apply(visitor: Visitor) = visitor.visitDisjunctionNode(this)
+}

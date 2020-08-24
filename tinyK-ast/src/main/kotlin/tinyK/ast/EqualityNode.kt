@@ -16,9 +16,13 @@
 
 package tinyK.ast
 
+import tinyK.ast.visitor.Visitor
+
 data class EqualityNode(
     val left: ExpressionNode,
     val operator: String, // TODO: Use an actual type here
     val right: ExpressionNode
-) : ExpressionNode()
+) : ExpressionNode() {
+    override fun apply(visitor: Visitor) = visitor.visitEqualityNode(this)
+}
 

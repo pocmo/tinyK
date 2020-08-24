@@ -17,10 +17,13 @@
 package tinyK.ast
 
 import tinyK.ast.metadata.Type
+import tinyK.ast.visitor.Visitor
 
 data class PropertyDeclarationNode(
     val immutable: Boolean,
     val identifier: String,
     val type: Type,
     val expression: ExpressionNode?
-) : DeclarationNode()
+) : DeclarationNode() {
+    override fun apply(visitor: Visitor) = visitor.visitPropertyDeclarationNode(this)
+}

@@ -16,6 +16,10 @@
 
 package tinyK.ast
 
+import tinyK.ast.visitor.Visitor
+
 data class IdentifierNode(
     val name: String
-) : ExpressionNode()
+) : ExpressionNode() {
+    override fun apply(visitor: Visitor) = visitor.visitIdentifierNode(this)
+}

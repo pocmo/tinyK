@@ -16,4 +16,8 @@
 
 package tinyK.ast
 
-abstract class StatementNode()
+import tinyK.ast.visitor.Visitor
+
+abstract class StatementNode() {
+    abstract fun apply(visitor: Visitor)
+}
