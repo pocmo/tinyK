@@ -39,6 +39,7 @@ data class Token(
         DIVISION,
 
         DISJUNCTION,
+        CONJUNCTION,
 
         EQUAL,
         EQUAL_EQUAL,

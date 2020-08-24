@@ -71,6 +71,14 @@ class Scanner {
                     }
                 }
 
+                input.matchesAndProceed('&') -> {
+                    if (input.matchesAndProceed('&')) {
+                        tokens.add(Token(Token.Type.CONJUNCTION, "&&"))
+                    } else {
+                        throw ScannerException("Expected &. Got: ${input.character()}")
+                    }
+                }
+
                 else -> throw ScannerException("Unexpected character: ${input.character()}")
             }
         }

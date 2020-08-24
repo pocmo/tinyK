@@ -18,6 +18,7 @@ package tinyK.frontend.cheesy.parser
 
 import tinyK.ast.BooleanLiteralNode
 import tinyK.ast.ConjunctionNode
+import tinyK.ast.DisjunctionNode
 import tinyK.ast.DoubleLiteralNode
 import tinyK.ast.EqualityNode
 import tinyK.ast.ExpressionNode
@@ -129,7 +130,7 @@ private fun TokenReader.disjunction(): ExpressionNode {
 
     while (token().type == Token.Type.DISJUNCTION) {
         proceed()
-        conjunction = ConjunctionNode(conjunction, conjunction())
+        conjunction = DisjunctionNode(conjunction, conjunction())
     }
 
     return conjunction
@@ -137,7 +138,14 @@ private fun TokenReader.disjunction(): ExpressionNode {
 
 private fun TokenReader.conjunction(): ExpressionNode {
     // equality ('&&' equality)*
-    return equality()
+    var equality = equality()
+
+    while (token().type == Token.Type.CONJUNCTION) {
+        proceed()
+        equality = ConjunctionNode(equality, equality())
+    }
+
+    return equality
 }
 
 private fun TokenReader.equality(): ExpressionNode {
