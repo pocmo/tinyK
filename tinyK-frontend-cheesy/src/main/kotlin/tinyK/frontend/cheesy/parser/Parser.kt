@@ -22,6 +22,7 @@ import tinyK.ast.DisjunctionNode
 import tinyK.ast.DoubleLiteralNode
 import tinyK.ast.EqualityNode
 import tinyK.ast.ExpressionNode
+import tinyK.ast.FunctionCallNode
 import tinyK.ast.IdentifierNode
 import tinyK.ast.IntegerLiteralNode
 import tinyK.ast.LiteralNode
@@ -30,6 +31,7 @@ import tinyK.ast.ScriptNode
 import tinyK.ast.StatementNode
 import tinyK.ast.metadata.Type
 import tinyK.frontend.cheesy.scanner.Token
+import tinyK.frontend.cheesy.scanner.isCallSuffix
 import tinyK.frontend.cheesy.scanner.isDeclaration
 import tinyK.frontend.cheesy.scanner.isEqualityOperator
 import tinyK.frontend.cheesy.scanner.isLiteral
@@ -162,6 +164,50 @@ private fun TokenReader.equality(): ExpressionNode {
 
 private fun TokenReader.comparison(): ExpressionNode {
     // genericCallLikeComparison (comparisonOperator genericCallLikeComparison)*
+    return genericCallLikeComparison()
+}
+
+private fun TokenReader.genericCallLikeComparison(): ExpressionNode {
+    // infixOperation callSuffix*
+
+    val operation = infixOperation()
+
+    if (token().isCallSuffix()) {
+        return FunctionCallNode(operation, callSuffix())
+    }
+
+    return operation
+}
+
+private fun TokenReader.callSuffix(): List<ExpressionNode> {
+    // typeArguments? valueArguments? annotatedLambda
+    // | typeArguments? valueArguments
+
+    // Note: We ignore `typeArguments` and `annotatedLambda` for now.
+    return valueArguments()
+}
+
+private fun TokenReader.valueArguments(): List<ExpressionNode> {
+    tokenAndProceed(Token.Type.LEFT_PARENTHESIS)
+
+    val arguments = mutableListOf<ExpressionNode>()
+
+    while (token().type != Token.Type.RIGHT_PARENTHESIS && token().type != Token.Type.EOF) {
+        if (arguments.isNotEmpty()) {
+            tokenAndProceed(Token.Type.COMMA)
+        }
+        arguments.add(expression())
+    }
+
+    tokenAndProceed(Token.Type.RIGHT_PARENTHESIS)
+
+    return arguments
+}
+
+private fun TokenReader.infixOperation(): ExpressionNode {
+    // Grammar: elvisExpression ((inOperator elvisExpression) | (isOperator type))*
+
+    // Note: For now we shortcut to literal/indetifier here.
     return if (token().isLiteral()) {
         literal()
     } else {

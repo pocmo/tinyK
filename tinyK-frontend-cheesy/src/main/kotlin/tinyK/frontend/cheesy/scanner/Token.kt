@@ -32,6 +32,8 @@ data class Token(
         IDENTIFIER,
 
         COLON,
+        DOT,
+        COMMA,
 
         PLUS,
         MINUS,
@@ -98,4 +100,8 @@ private val propertyDeclarationTypes: List<Token.Type> = listOf(
 
 fun Token.isPropertyDeclaration(): Boolean = type in propertyDeclarationTypes
 
+private val callSuffixTypes: List<Token.Type> = listOf(
+    Token.Type.LEFT_PARENTHESIS
+)
 
+fun Token.isCallSuffix(): Boolean = type in callSuffixTypes

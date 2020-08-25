@@ -79,6 +79,9 @@ class Scanner {
                     }
                 }
 
+                input.matchesAndProceed('.') -> tokens.add(Token(Token.Type.DOT, "."))
+                input.matchesAndProceed(',') -> tokens.add(Token(Token.Type.COMMA, ","))
+
                 else -> throw ScannerException("Unexpected character: ${input.character()}")
             }
         }

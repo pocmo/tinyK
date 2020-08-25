@@ -138,6 +138,32 @@ class ScannerTest {
     }
 
     @Test
+    fun `val assignment function call`() {
+        val tokens = Scanner().scan(
+            Input(
+                """
+            val food = fridge.getFood()
+                """.trimIndent()
+            )
+        )
+
+        assertEquals(
+            listOf(
+                Token(Token.Type.VAL, "val"),
+                Token(Token.Type.IDENTIFIER, "food"),
+                Token(Token.Type.EQUAL, "="),
+                Token(Token.Type.IDENTIFIER, "fridge"),
+                Token(Token.Type.DOT, "."),
+                Token(Token.Type.IDENTIFIER, "getFood"),
+                Token(Token.Type.LEFT_PARENTHESIS, "("),
+                Token(Token.Type.RIGHT_PARENTHESIS, ")"),
+                Token(Token.Type.EOF, null)
+            ),
+            tokens
+        )
+    }
+
+    @Test
     fun `Simple function`() {
         val tokens = Scanner().scan(
             Input(

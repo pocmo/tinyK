@@ -18,7 +18,9 @@ package tinyK.frontend.cheesy.parser
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import tinyK.ast.visitor.PrintTree
 import tinyK.frontend.cheesy.scanner.Scanner
+import tinyK.frontend.cheesy.scanner.Token
 import tinyK.frontend.cheesy.util.Input
 import tinyK.frontend.cheesy.util.TokenReader
 
@@ -90,7 +92,7 @@ class ParserTest {
         val script = Parser().parse(TokenReader(tokens))
 
         assertEquals(
-            "ScriptNode(statements=[PropertyDeclarationNode(immutable=true, identifier=food, type=<Unknown>, expression=DisjunctionNode(leftExpression=IdentifierNode(name=fruit), rightExpression=IdentifierNode(name=vegetable)))])",
+            "ScriptNode(statements=[PropertyDeclarationNode(immutable=true, identifier=food, type=<Unknown>, expression=DisjunctionNode(left=IdentifierNode(name=fruit), right=IdentifierNode(name=vegetable)))])",
             script.toString()
         )
     }
@@ -108,7 +110,43 @@ class ParserTest {
         val script = Parser().parse(TokenReader(tokens))
 
         assertEquals(
-            "ScriptNode(statements=[PropertyDeclarationNode(immutable=true, identifier=food, type=<Unknown>, expression=ConjunctionNode(leftExpression=IdentifierNode(name=fruit), rightExpression=IdentifierNode(name=vegetable)))])",
+            "ScriptNode(statements=[PropertyDeclarationNode(immutable=true, identifier=food, type=<Unknown>, expression=ConjunctionNode(left=IdentifierNode(name=fruit), right=IdentifierNode(name=vegetable)))])",
+            script.toString()
+        )
+    }
+
+    @Test
+    fun `val assignment function call`() {
+        val tokens = Scanner().scan(
+            Input(
+                """
+            val food = getFood()
+                """.trimIndent()
+            )
+        )
+
+        val script = Parser().parse(TokenReader(tokens))
+
+        assertEquals(
+            "ScriptNode(statements=[PropertyDeclarationNode(immutable=true, identifier=food, type=<Unknown>, expression=FunctionCallNode(callee=IdentifierNode(name=getFood), arguments=[]))])",
+            script.toString()
+        )
+    }
+
+    @Test
+    fun `val assignment function call with arguments`() {
+        val tokens = Scanner().scan(
+            Input(
+                """
+            val food = getFood(color, 2)
+                """.trimIndent()
+            )
+        )
+
+        val script = Parser().parse(TokenReader(tokens))
+
+        assertEquals(
+            "ScriptNode(statements=[PropertyDeclarationNode(immutable=true, identifier=food, type=<Unknown>, expression=FunctionCallNode(callee=IdentifierNode(name=getFood), arguments=[IdentifierNode(name=color), IntegerLiteralNode(value=2)]))])",
             script.toString()
         )
     }
