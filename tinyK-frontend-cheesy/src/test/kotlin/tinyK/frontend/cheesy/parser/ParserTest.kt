@@ -150,4 +150,22 @@ class ParserTest {
             script.toString()
         )
     }
+
+    @Test
+    fun `val assignment member function call with arguments`() {
+        val tokens = Scanner().scan(
+            Input(
+                """
+            val food = storage.fridge.getFood(color.getFruitColor(), 2)
+                """.trimIndent()
+            )
+        )
+
+        val script = Parser().parse(TokenReader(tokens))
+
+        assertEquals(
+            "ScriptNode(statements=[PropertyDeclarationNode(immutable=true, identifier=food, type=<Unknown>, expression=FunctionCallNode(callee=MemberAccessNode(target=MemberAccessNode(target=IdentifierNode(name=storage), member=IdentifierNode(name=fridge)), member=IdentifierNode(name=getFood)), arguments=[FunctionCallNode(callee=MemberAccessNode(target=IdentifierNode(name=color), member=IdentifierNode(name=getFruitColor)), arguments=[]), IntegerLiteralNode(value=2)]))])",
+            script.toString()
+        )
+    }
 }

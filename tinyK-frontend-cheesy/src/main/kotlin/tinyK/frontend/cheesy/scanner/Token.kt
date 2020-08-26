@@ -105,3 +105,11 @@ private val callSuffixTypes: List<Token.Type> = listOf(
 )
 
 fun Token.isCallSuffix(): Boolean = type in callSuffixTypes
+
+private val memberAccessOperators: List<Token.Type> = listOf(
+    Token.Type.DOT
+)
+
+fun Token.isMemberAccessOperator(): Boolean = type in memberAccessOperators
+
+fun Token.isPostfixUnarySuffix(): Boolean = isMemberAccessOperator()

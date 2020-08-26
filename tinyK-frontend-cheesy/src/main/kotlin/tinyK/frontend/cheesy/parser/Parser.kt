@@ -26,6 +26,7 @@ import tinyK.ast.FunctionCallNode
 import tinyK.ast.IdentifierNode
 import tinyK.ast.IntegerLiteralNode
 import tinyK.ast.LiteralNode
+import tinyK.ast.MemberAccessNode
 import tinyK.ast.PropertyDeclarationNode
 import tinyK.ast.ScriptNode
 import tinyK.ast.StatementNode
@@ -35,6 +36,8 @@ import tinyK.frontend.cheesy.scanner.isCallSuffix
 import tinyK.frontend.cheesy.scanner.isDeclaration
 import tinyK.frontend.cheesy.scanner.isEqualityOperator
 import tinyK.frontend.cheesy.scanner.isLiteral
+import tinyK.frontend.cheesy.scanner.isMemberAccessOperator
+import tinyK.frontend.cheesy.scanner.isPostfixUnarySuffix
 import tinyK.frontend.cheesy.scanner.isPropertyDeclaration
 import tinyK.frontend.cheesy.util.TokenReader
 
@@ -172,8 +175,8 @@ private fun TokenReader.genericCallLikeComparison(): ExpressionNode {
 
     val operation = infixOperation()
 
-    if (token().isCallSuffix()) {
-        return FunctionCallNode(operation, callSuffix())
+    when {
+        token().isCallSuffix() -> return FunctionCallNode(operation, callSuffix())
     }
 
     return operation
@@ -207,7 +210,44 @@ private fun TokenReader.valueArguments(): List<ExpressionNode> {
 private fun TokenReader.infixOperation(): ExpressionNode {
     // Grammar: elvisExpression ((inOperator elvisExpression) | (isOperator type))*
 
-    // Note: For now we shortcut to literal/indetifier here.
+    // Note: We shortcut to postfixUnaryExpression here.
+    return postfixUnaryExpression()
+}
+
+private fun TokenReader.postfixUnaryExpression(): ExpressionNode {
+    //   : primaryExpression
+    //   | primaryExpression postfixUnarySuffix+
+
+    var expression = primaryExpression()
+
+    while (token().isPostfixUnarySuffix()) {
+        when {
+            token().isMemberAccessOperator() -> {
+                proceed()
+                expression = MemberAccessNode(expression, identifier())
+            }
+        }
+    }
+
+    return expression
+}
+
+private fun TokenReader.primaryExpression(): ExpressionNode {
+    //    : parenthesizedExpression
+    //   | simpleIdentifier
+    //   | literalConstant
+    //   | stringLiteral
+    //   | callableReference
+    //   | functionLiteral
+    //   | objectLiteral
+    //   | collectionLiteral
+    //   | thisExpression
+    //   | superExpression
+    //   | ifExpression
+    //   | whenExpression
+    //   | tryExpression
+    //   | jumpExpression
+
     return if (token().isLiteral()) {
         literal()
     } else {
