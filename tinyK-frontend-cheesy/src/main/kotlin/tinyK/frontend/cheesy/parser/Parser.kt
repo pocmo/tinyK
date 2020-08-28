@@ -16,6 +16,7 @@
 
 package tinyK.frontend.cheesy.parser
 
+import tinyK.ast.BinaryOperation
 import tinyK.ast.BooleanLiteralNode
 import tinyK.ast.ConjunctionNode
 import tinyK.ast.DisjunctionNode
@@ -32,6 +33,7 @@ import tinyK.ast.ScriptNode
 import tinyK.ast.StatementNode
 import tinyK.ast.metadata.Type
 import tinyK.frontend.cheesy.scanner.Token
+import tinyK.frontend.cheesy.scanner.isAdditiveOperator
 import tinyK.frontend.cheesy.scanner.isCallSuffix
 import tinyK.frontend.cheesy.scanner.isDeclaration
 import tinyK.frontend.cheesy.scanner.isEqualityOperator
@@ -57,6 +59,9 @@ class ParserException(message: String) : Exception(message)
  *
  * Clang AST docs:
  * https://clang.llvm.org/docs/IntroductionToTheClangAST.html
+ *
+ * Kotlin PSI:
+ * https://github.com/JetBrains/kotlin/tree/master/compiler/psi/src/org/jetbrains/kotlin/psi
  */
 class Parser {
     fun parse(reader: TokenReader): ScriptNode {
@@ -210,6 +215,25 @@ private fun TokenReader.valueArguments(): List<ExpressionNode> {
 private fun TokenReader.infixOperation(): ExpressionNode {
     // Grammar: elvisExpression ((inOperator elvisExpression) | (isOperator type))*
 
+    // Note: We shortcut to additiveExpression here.
+    return additiveExpression()
+}
+
+private fun TokenReader.additiveExpression(): ExpressionNode {
+    // Grammar: multiplicativeExpression (additiveOperator multiplicativeExpression)*
+
+    var expression = multiplicativeExpression()
+
+    while (token().isAdditiveOperator()) {
+        val operator = tokenAndProceed()
+
+        expression = BinaryOperation(expression, operator.value.toString(), multiplicativeExpression())
+    }
+
+    return expression
+}
+
+private fun TokenReader.multiplicativeExpression(): ExpressionNode {
     // Note: We shortcut to postfixUnaryExpression here.
     return postfixUnaryExpression()
 }

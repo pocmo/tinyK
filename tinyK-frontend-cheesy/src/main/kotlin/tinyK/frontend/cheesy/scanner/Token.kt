@@ -113,3 +113,10 @@ private val memberAccessOperators: List<Token.Type> = listOf(
 fun Token.isMemberAccessOperator(): Boolean = type in memberAccessOperators
 
 fun Token.isPostfixUnarySuffix(): Boolean = isMemberAccessOperator()
+
+private val additiveOperator: List<Token.Type> = listOf(
+    Token.Type.PLUS,
+    Token.Type.MINUS
+)
+
+fun Token.isAdditiveOperator(): Boolean = type in additiveOperator

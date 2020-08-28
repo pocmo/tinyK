@@ -197,4 +197,27 @@ class ScannerTest {
             tokens
         )
     }
+
+    @Test
+    fun `additive expression`() {
+        val tokens = Scanner().scan(
+            Input(
+                """
+            x + 12 - y
+                """.trimIndent()
+            )
+        )
+
+        assertEquals(
+            listOf(
+                Token(Token.Type.IDENTIFIER, "x"),
+                Token(Token.Type.PLUS, "+"),
+                Token(Token.Type.INTEGER_LITERAL, 12),
+                Token(Token.Type.MINUS, "-"),
+                Token(Token.Type.IDENTIFIER, "y"),
+                Token(Token.Type.EOF, null)
+            ),
+            tokens
+        )
+    }
 }

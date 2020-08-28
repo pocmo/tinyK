@@ -16,6 +16,7 @@
 
 package tinyK.ast.visitor
 
+import tinyK.ast.BinaryOperation
 import tinyK.ast.BooleanLiteralNode
 import tinyK.ast.ConjunctionNode
 import tinyK.ast.DisjunctionNode
@@ -28,6 +29,7 @@ import tinyK.ast.MemberAccessNode
 import tinyK.ast.PropertyDeclarationNode
 
 interface Visitor {
+    fun visitBinaryOperation(node: BinaryOperation)
     fun visitBooleanLiteralNode(node: BooleanLiteralNode)
     fun visitConjunctionNode(node: ConjunctionNode)
     fun visitDisjunctionNode(node: DisjunctionNode)
