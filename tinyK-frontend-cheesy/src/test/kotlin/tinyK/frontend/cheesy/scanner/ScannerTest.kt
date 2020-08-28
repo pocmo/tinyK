@@ -220,4 +220,31 @@ class ScannerTest {
             tokens
         )
     }
+
+    @Test
+    fun `additive and multiplicative expression`() {
+        val tokens = Scanner().scan(
+            Input(
+                """
+            x + 12 * y + 13 / 2
+                """.trimIndent()
+            )
+        )
+
+        assertEquals(
+            listOf(
+                Token(Token.Type.IDENTIFIER, "x"),
+                Token(Token.Type.PLUS, "+"),
+                Token(Token.Type.INTEGER_LITERAL, 12),
+                Token(Token.Type.MULTIPLICATION, "*"),
+                Token(Token.Type.IDENTIFIER, "y"),
+                Token(Token.Type.PLUS, "+"),
+                Token(Token.Type.INTEGER_LITERAL, 13),
+                Token(Token.Type.DIVISION, "/"),
+                Token(Token.Type.INTEGER_LITERAL, 2),
+                Token(Token.Type.EOF, null)
+            ),
+            tokens
+        )
+    }
 }

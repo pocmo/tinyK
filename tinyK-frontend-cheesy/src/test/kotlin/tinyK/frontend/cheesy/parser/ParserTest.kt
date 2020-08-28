@@ -186,4 +186,22 @@ class ParserTest {
             script.toString()
         )
     }
+
+    @Test
+    fun `additive and multiplicative expression`() {
+        val tokens = Scanner().scan(
+            Input(
+                """
+            x + 12 * y + 13 / 2
+                """.trimIndent()
+            )
+        )
+
+        val script = Parser().parse(TokenReader(tokens))
+
+        assertEquals(
+            "ScriptNode(statements=[BinaryOperation(left=BinaryOperation(left=IdentifierNode(name=x), operator=+, right=BinaryOperation(left=IntegerLiteralNode(value=12), operator=*, right=IdentifierNode(name=y))), operator=+, right=BinaryOperation(left=IntegerLiteralNode(value=13), operator=/, right=IntegerLiteralNode(value=2)))])",
+            script.toString()
+        )
+    }
 }

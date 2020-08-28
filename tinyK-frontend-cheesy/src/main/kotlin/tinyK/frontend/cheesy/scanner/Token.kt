@@ -120,3 +120,10 @@ private val additiveOperator: List<Token.Type> = listOf(
 )
 
 fun Token.isAdditiveOperator(): Boolean = type in additiveOperator
+
+private val multiplicativeOperator: List<Token.Type> = listOf(
+    Token.Type.MULTIPLICATION,
+    Token.Type.DIVISION
+)
+
+fun Token.isMultiplicativeOperator(): Boolean = type in multiplicativeOperator

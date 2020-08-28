@@ -85,6 +85,9 @@ class Scanner {
                 input.matchesAndProceed('+') -> tokens.add(Token(Token.Type.PLUS, "+"))
                 input.matchesAndProceed('-') -> tokens.add(Token(Token.Type.MINUS, "-"))
 
+                input.matchesAndProceed('*') -> tokens.add(Token(Token.Type.MULTIPLICATION, "*"))
+                input.matchesAndProceed('/') -> tokens.add(Token(Token.Type.DIVISION, "/"))
+
                 else -> throw ScannerException("Unexpected character: ${input.character()}")
             }
         }

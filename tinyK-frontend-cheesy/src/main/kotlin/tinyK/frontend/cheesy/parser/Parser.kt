@@ -39,6 +39,7 @@ import tinyK.frontend.cheesy.scanner.isDeclaration
 import tinyK.frontend.cheesy.scanner.isEqualityOperator
 import tinyK.frontend.cheesy.scanner.isLiteral
 import tinyK.frontend.cheesy.scanner.isMemberAccessOperator
+import tinyK.frontend.cheesy.scanner.isMultiplicativeOperator
 import tinyK.frontend.cheesy.scanner.isPostfixUnarySuffix
 import tinyK.frontend.cheesy.scanner.isPropertyDeclaration
 import tinyK.frontend.cheesy.util.TokenReader
@@ -234,6 +235,20 @@ private fun TokenReader.additiveExpression(): ExpressionNode {
 }
 
 private fun TokenReader.multiplicativeExpression(): ExpressionNode {
+    // Grammar: asExpression (multiplicativeOperator asExpression)*
+
+    var expression = asExpression()
+
+    while (token().isMultiplicativeOperator()) {
+        val operator = tokenAndProceed()
+
+        expression = BinaryOperation(expression, operator.value.toString(), asExpression())
+    }
+
+    return expression
+}
+
+private fun TokenReader.asExpression(): ExpressionNode {
     // Note: We shortcut to postfixUnaryExpression here.
     return postfixUnaryExpression()
 }
