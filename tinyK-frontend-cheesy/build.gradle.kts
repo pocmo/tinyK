@@ -9,6 +9,7 @@ repositories {
 }
 dependencies {
     implementation(project(":tinyK-ast"))
+    implementation(project(":tinyK-concept"))
 
     testImplementation(kotlin("test-junit"))
 }

@@ -1,5 +1,3 @@
-import tinyK.cli.Compiler
-
 /*
  * Copyright 2020 Sebastian Kaspari
  *
@@ -16,4 +14,15 @@ import tinyK.cli.Compiler
  * limitations under the License.
  */
 
-fun main(args: Array<String>) = Compiler().main(args)
+package tinyK.cli
+
+import tinyK.concept.Frontend
+import tinyK.frontend.cheesy.CheesyFrontend
+
+enum class FrontendOption {
+    CHEESY {
+        override fun create(): Frontend = CheesyFrontend()
+    };
+
+    abstract fun create(): Frontend
+}

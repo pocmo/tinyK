@@ -1,5 +1,3 @@
-import tinyK.cli.Compiler
-
 /*
  * Copyright 2020 Sebastian Kaspari
  *
@@ -16,4 +14,11 @@ import tinyK.cli.Compiler
  * limitations under the License.
  */
 
-fun main(args: Array<String>) = Compiler().main(args)
+package tinyK.concept
+
+import tinyK.ast.ScriptNode
+import java.io.File
+
+interface Frontend {
+    fun process(file: File): ScriptNode
+}
