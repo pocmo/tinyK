@@ -52,6 +52,10 @@ class TokenReader(
         return false
     }
 
+    fun assertAndProceed(type: Token.Type) {
+        tokenAndProceed(type)
+    }
+
     fun tokenAndProceed(type: Token.Type): Token {
         return tokenAndProceed().also {
             if (it.type != type) {

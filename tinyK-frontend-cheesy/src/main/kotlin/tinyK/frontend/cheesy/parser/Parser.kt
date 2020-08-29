@@ -287,10 +287,10 @@ private fun TokenReader.primaryExpression(): ExpressionNode {
     //   | tryExpression
     //   | jumpExpression
 
-    return if (token().isLiteral()) {
-        literal()
-    } else {
-        identifier()
+    return when {
+        token().isLiteral() -> literal()
+        checkTokenAndProceed(Token.Type.LEFT_PARENTHESIS) -> expression().also { assertAndProceed(Token.Type.RIGHT_PARENTHESIS) }
+        else -> identifier()
     }
 }
 
