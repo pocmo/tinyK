@@ -18,9 +18,7 @@ package tinyK.frontend.cheesy.parser
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import tinyK.ast.visitor.PrintTree
 import tinyK.frontend.cheesy.scanner.Scanner
-import tinyK.frontend.cheesy.scanner.Token
 import tinyK.frontend.cheesy.util.Input
 import tinyK.frontend.cheesy.util.TokenReader
 
@@ -57,6 +55,24 @@ class ParserTest {
 
         assertEquals(
             "ScriptNode(statements=[PropertyDeclarationNode(immutable=false, identifier=x, type=<Double>, expression=DoubleLiteralNode(value=42.0))])",
+            script.toString()
+        )
+    }
+
+    @Test
+    fun `val assignment with float type`() {
+        val tokens = Scanner().scan(
+            Input(
+                """
+                var x: Float = 42.0f
+                """.trimIndent()
+            )
+        )
+
+        val script = Parser().parse(TokenReader(tokens))
+
+        assertEquals(
+            "ScriptNode(statements=[PropertyDeclarationNode(immutable=false, identifier=x, type=<Float>, expression=FloatLiteralNode(value=42.0))])",
             script.toString()
         )
     }

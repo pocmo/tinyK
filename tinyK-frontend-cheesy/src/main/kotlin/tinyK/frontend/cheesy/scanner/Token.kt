@@ -53,6 +53,7 @@ data class Token(
 
         INTEGER_LITERAL,
         DOUBLE_LITERAL,
+        FLOAT_LITERAL,
         BOOLEAN_LITERAL,
     }
 }
@@ -60,7 +61,8 @@ data class Token(
 private val literalTypes: List<Token.Type> = listOf(
     Token.Type.INTEGER_LITERAL,
     Token.Type.DOUBLE_LITERAL,
-    Token.Type.BOOLEAN_LITERAL
+    Token.Type.BOOLEAN_LITERAL,
+    Token.Type.FLOAT_LITERAL
 )
 
 fun Token.isLiteral(): Boolean = type in literalTypes

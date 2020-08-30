@@ -66,6 +66,28 @@ class ScannerTest {
     }
 
     @Test
+    fun `var assignment float`() {
+        val tokens = Scanner().scan(
+            Input(
+                """
+            var x = 42.0f
+                """.trimIndent()
+            )
+        )
+
+        assertEquals(
+            listOf(
+                Token(Token.Type.VAR, "var"),
+                Token(Token.Type.IDENTIFIER, "x"),
+                Token(Token.Type.EQUAL, "="),
+                Token(Token.Type.FLOAT_LITERAL, 42.0f),
+                Token(Token.Type.EOF, null)
+            ),
+            tokens
+        )
+    }
+
+    @Test
     fun `var assignment int with type`() {
         val tokens = Scanner().scan(
             Input(

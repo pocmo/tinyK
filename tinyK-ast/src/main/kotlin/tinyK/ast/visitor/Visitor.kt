@@ -22,6 +22,7 @@ import tinyK.ast.ConjunctionNode
 import tinyK.ast.DisjunctionNode
 import tinyK.ast.DoubleLiteralNode
 import tinyK.ast.EqualityNode
+import tinyK.ast.FloatLiteralNode
 import tinyK.ast.FunctionCallNode
 import tinyK.ast.IdentifierNode
 import tinyK.ast.IntegerLiteralNode
@@ -34,6 +35,7 @@ interface Visitor {
     fun visitConjunctionNode(node: ConjunctionNode)
     fun visitDisjunctionNode(node: DisjunctionNode)
     fun visitDoubleLiteralNode(node: DoubleLiteralNode)
+    fun visitFloatLiteralNode(node: FloatLiteralNode)
     fun visitEqualityNode(node: EqualityNode)
     fun visitIdentifierNode(node: IdentifierNode)
     fun visitIntegerLiteralNode(node: IntegerLiteralNode)

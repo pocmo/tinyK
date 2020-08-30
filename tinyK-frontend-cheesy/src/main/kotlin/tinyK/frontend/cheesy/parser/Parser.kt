@@ -23,6 +23,7 @@ import tinyK.ast.DisjunctionNode
 import tinyK.ast.DoubleLiteralNode
 import tinyK.ast.EqualityNode
 import tinyK.ast.ExpressionNode
+import tinyK.ast.FloatLiteralNode
 import tinyK.ast.FunctionCallNode
 import tinyK.ast.IdentifierNode
 import tinyK.ast.IntegerLiteralNode
@@ -299,6 +300,7 @@ private fun TokenReader.literal(): LiteralNode {
 
     return when (token.type) {
         Token.Type.DOUBLE_LITERAL -> DoubleLiteralNode(token.value as Double)
+        Token.Type.FLOAT_LITERAL -> FloatLiteralNode(token.value as Float)
         Token.Type.INTEGER_LITERAL -> IntegerLiteralNode(token.value as Int)
         Token.Type.BOOLEAN_LITERAL -> BooleanLiteralNode(token.value as Boolean)
         else -> throw ParserException("Expected literal. Got: $token")

@@ -140,7 +140,11 @@ class Scanner {
             if (fraction.isEmpty()) {
                 throw ScannerException("No fraction after decimal point ($integer.)")
             }
-            Token(Token.Type.DOUBLE_LITERAL, "$integer.$fraction".toDouble())
+            if (input.matchesAndProceed('f') || input.matchesAndProceed('F')) {
+                Token(Token.Type.FLOAT_LITERAL, "$integer.$fraction".toFloat())
+            } else {
+                Token(Token.Type.DOUBLE_LITERAL, "$integer.$fraction".toDouble())
+            }
         }
     }
 

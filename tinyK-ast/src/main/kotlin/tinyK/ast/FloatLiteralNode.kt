@@ -14,27 +14,12 @@
  * limitations under the License.
  */
 
-package tinyK.ast.metadata
+package tinyK.ast
 
-sealed class Type {
-    object Int : Type()
-    object Double : Type()
-    object Float : Type()
-    object Unknown : Type()
-    data class Custom(val name: String) : Type()
+import tinyK.ast.visitor.Visitor
 
-    override fun toString(): String {
-        return "<${javaClass.simpleName}>"
-    }
-
-    companion object {
-        fun fromString(value: String): Type {
-            return when (value) {
-                "Int" -> Int
-                "Double" -> Double
-                "Float" -> Float
-                else -> Custom(value)
-            }
-        }
-    }
+data class FloatLiteralNode(
+    val value: Float
+) : LiteralNode() {
+    override fun apply(visitor: Visitor) = visitor.visitFloatLiteralNode(this)
 }
