@@ -17,16 +17,12 @@
 package tinyK.frontend.cheesy.parser
 
 import tinyK.ast.BinaryOperation
-import tinyK.ast.BooleanLiteralNode
 import tinyK.ast.ConjunctionNode
 import tinyK.ast.DisjunctionNode
-import tinyK.ast.DoubleLiteralNode
 import tinyK.ast.EqualityNode
 import tinyK.ast.ExpressionNode
-import tinyK.ast.FloatLiteralNode
 import tinyK.ast.FunctionCallNode
 import tinyK.ast.IdentifierNode
-import tinyK.ast.IntegerLiteralNode
 import tinyK.ast.LiteralNode
 import tinyK.ast.MemberAccessNode
 import tinyK.ast.PropertyDeclarationNode
@@ -299,10 +295,10 @@ private fun TokenReader.literal(): LiteralNode {
     val token = tokenAndProceed()
 
     return when (token.type) {
-        Token.Type.DOUBLE_LITERAL -> DoubleLiteralNode(token.value as Double)
-        Token.Type.FLOAT_LITERAL -> FloatLiteralNode(token.value as Float)
-        Token.Type.INTEGER_LITERAL -> IntegerLiteralNode(token.value as Int)
-        Token.Type.BOOLEAN_LITERAL -> BooleanLiteralNode(token.value as Boolean)
+        Token.Type.DOUBLE_LITERAL -> LiteralNode.DoubleLiteralNode(token.value as Double)
+        Token.Type.FLOAT_LITERAL -> LiteralNode.FloatLiteralNode(token.value as Float)
+        Token.Type.INTEGER_LITERAL -> LiteralNode.IntegerLiteralNode(token.value as Int)
+        Token.Type.BOOLEAN_LITERAL -> LiteralNode.BooleanLiteralNode(token.value as Boolean)
         else -> throw ParserException("Expected literal. Got: $token")
     }
 }

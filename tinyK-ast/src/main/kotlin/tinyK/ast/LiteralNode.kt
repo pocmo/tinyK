@@ -16,4 +16,26 @@
 
 package tinyK.ast
 
-abstract class LiteralNode : ComparisonNode()
+import tinyK.ast.visitor.Visitor
+
+sealed class LiteralNode : ExpressionNode() {
+    override fun apply(visitor: Visitor) = visitor.visitLiteralNode(this)
+
+    abstract val value: Any
+
+    data class BooleanLiteralNode(
+        override val value: Boolean
+    ) : LiteralNode()
+
+    data class DoubleLiteralNode(
+        override val value: Double
+    ) : LiteralNode()
+
+    data class FloatLiteralNode(
+        override val value: Float
+    ) : LiteralNode()
+
+    data class IntegerLiteralNode(
+        override val value: Int
+    ) : LiteralNode()
+}

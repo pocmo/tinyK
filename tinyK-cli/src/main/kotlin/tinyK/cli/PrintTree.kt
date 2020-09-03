@@ -17,14 +17,12 @@
 package tinyK.cli
 
 import tinyK.ast.BinaryOperation
-import tinyK.ast.BooleanLiteralNode
 import tinyK.ast.ConjunctionNode
 import tinyK.ast.DisjunctionNode
-import tinyK.ast.DoubleLiteralNode
 import tinyK.ast.EqualityNode
 import tinyK.ast.FunctionCallNode
 import tinyK.ast.IdentifierNode
-import tinyK.ast.IntegerLiteralNode
+import tinyK.ast.LiteralNode
 import tinyK.ast.MemberAccessNode
 import tinyK.ast.PropertyDeclarationNode
 import tinyK.ast.visitor.Visitor
@@ -36,7 +34,7 @@ class PrintTree : Visitor {
         node.right.apply(this)
     }
 
-    override fun visitBooleanLiteralNode(node: BooleanLiteralNode) {
+    override fun visitLiteralNode(node: LiteralNode) {
         println(node.value)
     }
 
@@ -52,10 +50,6 @@ class PrintTree : Visitor {
         node.right.apply(this)
     }
 
-    override fun visitDoubleLiteralNode(node: DoubleLiteralNode) {
-        println(node.value)
-    }
-
     override fun visitEqualityNode(node: EqualityNode) {
         node.left.apply(this)
         println("==")
@@ -64,10 +58,6 @@ class PrintTree : Visitor {
 
     override fun visitIdentifierNode(node: IdentifierNode) {
         println(node.name)
-    }
-
-    override fun visitIntegerLiteralNode(node: IntegerLiteralNode) {
-        println(node.value)
     }
 
     override fun visitPropertyDeclarationNode(node: PropertyDeclarationNode) {
